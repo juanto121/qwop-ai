@@ -1,0 +1,4 @@
+.idea/
+agent/venv
+game/node_modules
+agent/__pycache__
