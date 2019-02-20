@@ -7,4 +7,5 @@ class State:
         self.game.start()
         self.game.execute_action('q')
         self.game.get_screen_shot()
+        #self.game.get_screen_shot_timed()
 
