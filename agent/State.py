@@ -7,5 +7,9 @@ class State:
         self.game.start()
         self.game.execute_action('q')
         self.game.get_screen_shot()
+        while True:
+            score = self.game.get_score()
+            if(score != 0):
+                print(score)
         #self.game.get_screen_shot_timed()
 
