@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
+import numpy as np
 
 class Agent:
 
@@ -23,6 +24,10 @@ class Agent:
         self.driver.get('localhost:3000')
         self.canvas = self.driver.find_element_by_id('game-canvas')
 
+    # no-op
+    def n(self):
+        return
+
     def o(self):
         self.canvas.send_keys('o')
 
@@ -34,6 +39,9 @@ class Agent:
 
     def p(self):
         self.canvas.send_keys('p')
+
+    def r(self):
+        self.canvas.send_keys(np.random.choice(['q','w','o','p']))
 
     def space(self):
         self.canvas.send_keys(Keys.SPACE)
