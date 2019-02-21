@@ -5,6 +5,7 @@ import time
 import pytesseract
 import cv2
 import mss
+import re
 
 class Game:
 
@@ -22,21 +23,38 @@ class Game:
 
     def get_score(self):
         with mss.mss() as sct:
-            shot = sct.grab({"top": 148, "left": 90, "width": 21, "height": 15})
-            img = np.array(shot)
-            score = pytesseract.image_to_string('./assets/score.png')
-            #cv2.imshow('window', np.array(img))
-            #cv2.waitKey(1)
-        return 0 if score == '' else int(score)
+            shot = sct.grab({"top": 155, "left": 140, "width": 350, "height": 70})
+            img = ~(np.array(shot)[:,:,0]) #removes rgb and inverts colors
+            img = cv2.threshold(img, 125, 255, cv2.THRESH_BINARY)[1] #threshold to remove color artifacts and leave it black and white
+            score = pytesseract.image_to_string(image=img)
+            digits_rgx = re.compile("-?[0-9]+.[0-9]")
+            result = digits_rgx.findall(score)
+            if len(result) > 0:
+                score = result[0]
+            else:
+                score = 0
+        return score
 
     def get_screen_shot(self):
+        return self.screen_shot()
+
+    def get_screen_shot_timed(self):
+        while True:
+            start = time.time()
+            img = self.screen_shot()
+            cv2.imshow('window', img)
+            cv2.waitKey(1)
+            print(time.time() - start)
+        return img
+
+    def screen_shot(self):
         with mss.mss() as sct:
-            shot = sct.grab({"top": 157, "left": 70, "width": 110, "height": 100})
             """
             TODO:
             TEST ONLY GRAYSCALE
             this processing might not be useful since the important data is in the difference between frames
             """
+            shot = sct.grab({"top": 170, "left": 190, "width": 275, "height": 320})
             img = np.array(shot)
             img[:, :, 2] = 0
             img[:, :, 1] = 0
@@ -45,22 +63,5 @@ class Game:
             img[blueidx] = 255
             img[notblueidx] = 0
             img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-        return img
-
-    def get_screen_shot_timed(self):
-        with mss.mss() as sct:
-            while True:
-                start = time.time()
-                shot = sct.grab({"top": 157, "left": 70, "width": 110, "height": 100})
-                img = np.array(shot)
-                img[:, :, 2] = 0
-                img[:, :, 1] = 0
-                blueidx = img[:, :, 0] < 24
-                notblueidx = img[:, :, 0] >= 24
-                img[blueidx] = 255
-                img[notblueidx] = 0
-                img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-                cv2.imshow('window', img)
-                cv2.waitKey(1)
-                print(start-time.time())
+            img = cv2.resize(img, (0, 0), fx=0.25, fy=0.25)
         return img
