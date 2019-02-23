@@ -1,7 +1,10 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.action_chains import ActionChains
 import numpy as np
+import time
+from pynput.keyboard import Key, Controller
 
 class Agent:
 
@@ -23,25 +26,39 @@ class Agent:
         self.driver = webdriver.Chrome(executable_path = './chrome-driver/chromedriver', chrome_options = chrome_opts)
         self.driver.get('localhost:3000')
         self.canvas = self.driver.find_element_by_id('game-canvas')
+        self.canvas_size = {"w":600, "h":400}
+        self.is_paused = False
+        self.keyboard = Controller()
 
     # no-op
     def n(self):
         return
 
     def o(self):
-        self.canvas.send_keys('o')
+        self.keyboard.press('o')
+        time.sleep(0.08)
+        self.keyboard.release('o')
 
     def q(self):
-        self.canvas.send_keys('q')
+        self.keyboard.press('q')
+        time.sleep(0.08)
+        self.keyboard.release('q')
 
     def w(self):
-        self.canvas.send_keys('q')
+        self.keyboard.press('w')
+        time.sleep(0.08)
+        self.keyboard.release('w')
 
     def p(self):
-        self.canvas.send_keys('p')
+        self.keyboard.press('p')
+        time.sleep(0.08)
+        self.keyboard.release('p')
 
     def r(self):
-        self.canvas.send_keys(np.random.choice(['q','w','o','p']))
+        choice = np.random.choice(['q','w','o','p'])
+        self.keyboard.press(choice)
+        time.sleep(0.08)
+        self.keyboard.release(choice)
 
     def space(self):
         self.canvas.send_keys(Keys.SPACE)
@@ -49,8 +66,24 @@ class Agent:
     def start_game(self):
         self.canvas.click()
 
-    def reload(self):
+    def click_tutorial(self):
+        ac = ActionChains(self.driver)
+        ac.move_to_element(self.canvas)
+        ac.move_by_offset(-self.canvas_size["w"]/2+10, -self.canvas_size["h"]/2+20)
+        ac.click()
+        ac.perform()
+
+    def pause(self):
+        self.click_tutorial()
+
+    def unpause(self):
+        self.click_tutorial()
+
+    def hard_reload(self):
         self.canvas.send_keys(Keys.F5)
+
+    def reload(self):
+        self.canvas.send_keys('r')
 
     def screen_shot(self):
         return self.canvas.screenshot_as_base64

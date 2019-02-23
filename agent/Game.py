@@ -13,7 +13,6 @@ class Game:
         self.agent = Agent()
 
     def start(self):
-        self.agent.reload()
         self.agent.start_game()
 
     def reload(self):
@@ -21,9 +20,11 @@ class Game:
 
     def execute_action(self, action):
         # TODO: Optimize execution of actions (selenium is slow!)
+        #self.agent.unpause()
         for char in action:
             getattr(self.agent, char)()
         shot = self.get_screen_shot()
+        #self.agent.pause()
         done = self.is_done(shot)
         score = 0
         if done:
@@ -49,15 +50,12 @@ class Game:
         return score
 
     def get_screen_shot_timed(self):
-        while True:
-            start = time.time()
-            img = self.get_screen_shot()
-            cv2.imshow('window', img)
-            cv2.waitKey(1)
-            print(time.time() - start)
+        start = time.time()
+        img = self.get_screen_shot()
+        print(time.time() - start)
         return img
 
-    def get_screen_shot(self):
+    def get_screen_shot(self, render = False):
         with mss.mss() as sct:
             """
             TODO:
@@ -74,4 +72,9 @@ class Game:
             img[notblueidx] = 0
             img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
             img = cv2.resize(img, (0, 0), fx=0.25, fy=0.25)
+            if render: self.render(img)
         return img
+
+    def render(self, img):
+        cv2.imshow('window', img)
+        cv2.waitKey(1)
