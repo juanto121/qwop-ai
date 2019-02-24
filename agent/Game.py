@@ -11,14 +11,19 @@ class Game:
 
     def __init__(self):
         self.agent = Agent()
+        self.game_steps = 0
 
     def start(self):
         self.agent.start_game()
+        self.game_steps = 0
+        return self.execute_action('n')
 
     def reload(self):
+        self.game_steps = 0
         self.agent.space()
 
     def execute_action(self, action):
+        self.game_steps += 1
         # TODO: Optimize execution of actions (selenium is slow!)
         #self.agent.unpause()
         for char in action:
@@ -28,8 +33,10 @@ class Game:
         done = self.is_done(shot)
         score = 0
         if done:
-            score = self.get_score()
-        return (shot, score, self.is_done(shot))
+            distance_score = self.get_score()
+            time_score = -((self.game_steps * 0.1)/(abs(distance_score)+1e5))
+            score = distance_score + time_score
+        return shot.astype(np.float).ravel(), score, done
 
     def is_done(self, shot):
         mask = np.array([[0,0,191],[0,128,255],[0,255,255],[0,255,255],[0,255,255],[0,64,255],[0,0,64]])
