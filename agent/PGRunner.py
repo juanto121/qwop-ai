@@ -6,14 +6,16 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
 from torch.distributions import Categorical
+
 import time
+import pdb
 
 H = 200
 D = 80 * 69
 
 gamma = 0.99  # discount factor
 learning_rate = 1e-3
-batch_size = 5
+batch_size = 1
 END_GAME_FLAG = 1210
 
 
@@ -66,7 +68,7 @@ def main():
 
     while True:
 
-        for step in range(500):
+        for step in range(300):
 
             in_game_step += 1
 
@@ -109,10 +111,12 @@ def main():
             optimizer.zero_grad()
             policy_loss = []
 
+            #pdb.set_trace()
+
             for prob, dis_reward in zip(prob_pool, discounted_rewards):
                 policy_loss.append(-prob * dis_reward)
 
-            loss_fn = torch.cat(policy_loss).sum()
+            loss_fn = torch.stack(policy_loss).sum()
             loss_fn.backward()
             optimizer.step()
 
@@ -120,9 +124,10 @@ def main():
             del reward_pool[:]
 
             running_reward = reward_sum if running_reward is None else running_reward * 0.99 + reward_sum * 0.01
+            print(f'Batch reward total was ${reward_sum} running mean: #{running_reward}')
             reward_sum = 0
             prev_x = None
-            curr_x = env.reload()
+            curr_x, reward, done = env.reload()
             last_reward = 0
 
 
