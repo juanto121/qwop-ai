@@ -69,14 +69,14 @@ class Game:
         print(time.time() - start)
         return img
 
-    def get_screen_shot(self, render = False):
+    def get_screen_shot(self, render = True):
         with mss.mss() as sct:
+            shot = sct.grab({"top": 185, "left": 190, "width": 275, "height": 320})
             """
             TODO:
             TEST ONLY GRAYSCALE
             this processing might not be useful since the important data is in the difference between frames
-            """
-            shot = sct.grab({"top": 170, "left": 190, "width": 275, "height": 320})
+           
             img = np.array(shot)
             img[:, :, 2] = 0
             img[:, :, 1] = 0
@@ -85,6 +85,9 @@ class Game:
             img[blueidx] = 255
             img[notblueidx] = 0
             img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+            
+             """
+            img = np.array(shot)[:,:,0]
             img = cv2.resize(img, (0, 0), fx=0.25, fy=0.25)
             if render: self.render(img)
         return img

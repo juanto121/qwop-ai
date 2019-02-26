@@ -10,13 +10,15 @@ from torch.distributions import Categorical
 import time
 import pdb
 
-H = 200
+H = 300
 D = 80 * 69
 
 gamma = 0.99  # discount factor
 learning_rate = 1e-3
-batch_size = 1
+batch_size = 5
 END_GAME_FLAG = 1210
+resume = not True
+model_name = 'qwop.torch.model'
 
 
 class Policy(nn.Module):
@@ -49,6 +51,7 @@ def discount_rewards(reward_log):
 def main():
     policy = Policy()
     optimizer = torch.optim.Adam(policy.parameters(), lr=learning_rate)
+    if resume: policy.load_state_dict(torch.load(model_name))
 
     env = Game()
     env.start()
@@ -125,6 +128,7 @@ def main():
 
             running_reward = reward_sum if running_reward is None else running_reward * 0.99 + reward_sum * 0.01
             print(f'Batch reward total was ${reward_sum} running mean: #{running_reward}')
+            torch.save(policy.state_dict(), model_name)
             reward_sum = 0
             prev_x = None
             curr_x, reward, done = env.reload()
