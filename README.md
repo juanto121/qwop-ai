@@ -1,8 +1,5 @@
 # QWOP AI - Reinforcement learning.
 
-Wed 20 FEB 00:06 - I should be writing an essay for a scholarship, 
-but instead im writing (coding) something that truly brings me joy.
-
 Have you watched [Mike Boyd’s](https://www.youtube.com/user/microboyd) channel on youtube? 
 Its a fun one to waste time on. Mike, as he likes to put it, is an average guy that tries 
 to learn skills like juggling, stacking dice, and others while recording himself until he 
@@ -51,9 +48,8 @@ What I did instead was to use the [pytesseract](https://pypi.org/project/pytesse
 
 ![score_highlight](https://raw.githubusercontent.com/juanto121/qwop-ai/master/agent/assets/highlighted_score.png)
 
-
 Doing OCR with Tesseract also implied some bit of pre processing. Long story short, I needed an image with at least 300dpi and also that the image to be
-processed had to have black characters with a white background. This last thing showed to be extremely important for Tesseract, here's a [comparisson](LINK_TO_VIDEO).
+processed had to have black characters with a white background. This last thing showed to be extremely important for Tesseract, here's a [comparisson](https://youtu.be/wfzLy0zuoJQ).
 
 Detecting when the game has reached an end state was as simple as recognizing the end score screen, for this a simple comparison of 16 indexes did the job.
 
@@ -65,11 +61,11 @@ pip install requirements.txt
 python3 RandomRunner.py
 ```
 
+![score_highlight](https://raw.githubusercontent.com/juanto121/qwop-ai/master/agent/assets/random_runner.gif)
+
 ### RL Approach 0 - Vainilla policy gradients
 
-Once the game environment was stable enough, the approach was to implement a 1 layer policy network to start tuning hyperparameters. Here's a a hand drawn representation:
-
-![pseudo-arch](https://raw.githubusercontent.com/juanto121/qwop-ai/master/agent/assets/toy_diagram-1.jpg)
+Once the game environment was stable enough, the approach was to implement a 1 layer policy network to start tuning hyperparameters.
 
 The output was a softmax function with 5 outputs encoding the regular Q,W,O,P and the "do nothing" action.
 
