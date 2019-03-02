@@ -46,7 +46,6 @@ class Game:
         return shot.astype(np.float).ravel(), score, done
 
     def is_done(self, shot):
-        print(shot.shape)
         blueidx = shot[:, :] < 24
         notblueidx = shot[:, :] >= 24
         shot[blueidx] = 255
