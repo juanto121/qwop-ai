@@ -46,8 +46,14 @@ class Game:
         return shot.astype(np.float).ravel(), score, done
 
     def is_done(self, shot):
-        mask = np.array([[0,0,191],[0,128,255],[0,255,255],[0,255,255],[0,255,255],[0,64,255],[0,0,64]])
-        return np.array_equal(shot[18:25,66:], mask)
+        print(shot.shape)
+        blueidx = shot[:, :] < 24
+        notblueidx = shot[:, :] >= 24
+        shot[blueidx] = 255
+        shot[notblueidx] = 0
+        np.savetxt('sample_shot', shot[15:20,66:])
+        mask = np.array([[0,0,255],[0,255,255],[0,255,255],[0,255,255],[0,0,255],[0,0,255]])
+        return np.array_equal(shot[15:21,66:], mask)
 
     def get_score(self):
         with mss.mss() as sct:
@@ -69,7 +75,7 @@ class Game:
         print(time.time() - start)
         return img
 
-    def get_screen_shot(self, render = True):
+    def get_screen_shot(self, render = False):
         with mss.mss() as sct:
             shot = sct.grab({"top": 185, "left": 190, "width": 275, "height": 320})
             """
