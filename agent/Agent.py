@@ -61,9 +61,12 @@ class Agent:
         self.keyboard.release(choice)
 
     def space(self):
-        self.canvas.send_keys(Keys.SPACE)
+        self.keyboard.press(Key.space)
+        time.sleep(0.08)
+        self.keyboard.release(Key.space)
 
     def start_game(self):
+        self.canvas = self.driver.find_element_by_id('game-canvas')
         self.canvas.click()
 
     def click_tutorial(self):
@@ -80,10 +83,14 @@ class Agent:
         self.click_tutorial()
 
     def hard_reload(self):
-        self.canvas.send_keys(Keys.F5)
+        self.keyboard.press(Key.f5)
+        time.sleep(0.08)
+        self.keyboard.release(Key.f5)
 
     def reload(self):
-        self.canvas.send_keys('r')
+        self.keyboard.press('r')
+        time.sleep(0.08)
+        self.keyboard.release('r')
 
     def screen_shot(self):
         return self.canvas.screenshot_as_base64

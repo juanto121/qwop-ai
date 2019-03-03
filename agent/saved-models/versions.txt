@@ -1,0 +1,3 @@
+v0 : black and white relu 200 units
+v1: grey scale relu 200 units
+v2: grey scale relu 300 units -> relu 200 units 

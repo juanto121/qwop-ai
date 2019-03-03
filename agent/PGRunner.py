@@ -10,14 +10,15 @@ from torch.distributions import Categorical
 import time
 import pdb
 
-H = 300
+H_2 = 200
+H_1 = 300
 D = 80 * 69
 
 gamma = 0.99  # discount factor
 learning_rate = 1e-3
 batch_size = 5
 END_GAME_FLAG = 1210
-resume = not True
+resume = False
 model_name = 'qwop.torch.model'
 
 
@@ -25,12 +26,14 @@ class Policy(nn.Module):
 
     def __init__(self):
         super(Policy, self).__init__()
-        self.input = nn.Linear(D, H)
-        self.hidden = nn.Linear(H, 5)
+        self.input = nn.Linear(D, H_1)
+        self.hidden = nn.Linear(H_1, H_2)
+        self.hidden_2 = nn.Linear(H_2, 5)
 
     def forward(self, x):
         x = nn.functional.relu(self.input(x))
-        x = nn.functional.softmax(self.hidden(x), dim=0)
+        x = nn.functional.relu(self.hidden(x))
+        x = nn.functional.softmax(self.hidden_2(x), dim=0)
         return x
 
 
@@ -71,7 +74,7 @@ def main():
 
     while True:
 
-        for step in range(300):
+        for step in range(500):
 
             in_game_step += 1
 
@@ -99,7 +102,7 @@ def main():
 
             if reward != last_reward and reward != 0:
                 game += 1
-                print(f"{time.time()} episode: {steps}, game: ${game} reward {reward} {'😋' if reward == 1 else ''}")
+                print(f"{time.time()} episode: {steps}, game: {game} reward {reward}")
                 last_reward = reward
 
         steps += 1

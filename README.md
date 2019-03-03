@@ -5,8 +5,7 @@ Its a fun one to waste time on. Mike, as he likes to put it, is an average guy t
 to learn skills like juggling, stacking dice, and others while recording himself until he 
 masters the task at hand. On one of this challenges, he tries to learn QWOP (http://www.foddy.net/Athletics.html) 
 a game (writen by Bennett Foddy) in which there are four input buttons Q,W,O,P that control tighs and calves of an infuriating
-runner on a 100 meter track. As simple as it might seem, reaching the 100 meter mark took aproximately 8 hours for Mike which
-he seemed not to be enjoying very much.
+runner on a 100 meter track. As simple as it might seem, reaching the 100 meter mark took Mike approximately 8 hours.
 
 Inspired by this video, the following is an attempt to code an agent using reinforcement learning that reaches consistently the 100 meter mark with under 8 hours of training.
 
@@ -21,7 +20,7 @@ And a lecture about it here: https://www.youtube.com/watch?v=tqrcjHuNdmQ
 As usual, some leg work is required in order to have a runnable environment. The first thing is figuring out a way to run the game reliably
 without the need to make requests to the official site that hosts the game. Unfortunately, I found no way of getting the javascript code 
 that runs the game (read: I didn't try hard enough), and instead had to cope with the flash player version.
-The .swf (flash format) can be embedded in a browser testing environment after setting some obscure chrome flags that enable playing flash multimedia.
+The .swf (flash format) can be embedded in a browser testing environment, like selenium, after setting some obscure chrome flags that enable playing flash multimedia.
 
 To run the game in a local server:
 
@@ -40,7 +39,7 @@ After discarding this method, taking a screenshot using the [mss](https://pypi.o
 The only issue is that I had to hard code the position of the game in my screen hence ruining the ability to reliably reproducing the code 
 without this parameter being tweaked. With mss taking the screenshot, frames were taken every ~0.006ms (166 FPS!!).
 
-Reinforcement learning is all about rewards, rewards are based on the game scoring system, in the QWOP case the score should somehow be related to distance and if possible time and running style.
+Reinforcement learning is all about rewards, rewards are based on the game scoring system, in the QWOP case the distance score should somehow be related to distance and if possible time and running style.
 In order to get the score in this setup, pixel data on top of the screen (see picture 1) must be interpreted as text. There are multiple ways of achieving this, for instance training another neural net
 to overfit score image data. It sounded like a fancy option until I realized that it would be no different than comparing each pixel of every attainable score with a very nasty for loop 😒.
 What I did instead was to use the [pytesseract](https://pypi.org/project/pytesseract/) library that implements OCR.
@@ -51,7 +50,7 @@ What I did instead was to use the [pytesseract](https://pypi.org/project/pytesse
 Doing OCR with Tesseract also implied some bit of pre processing. Long story short, I needed an image with at least 300dpi and also that the image to be
 processed had to have black characters with a white background. This last thing showed to be extremely important for Tesseract, here's a [comparisson](https://youtu.be/wfzLy0zuoJQ).
 
-Detecting when the game has reached an end state was as simple as recognizing the end score screen, for this a simple comparison of 16 indexes did the job.
+Detecting when the game has reached an end state was as simple as recognizing the end score screen, for this, a simple comparison of 16 indexes did the job.
 
 To run the agent with random actions use:
 

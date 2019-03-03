@@ -25,24 +25,24 @@ class Game:
         return self.execute_action('n')
 
     def soft_reload(self):
+        self.game_steps = 0
         self.agent.reload()
 
     def execute_action(self, action):
+        self.agent.start_game()
         self.game_steps += 1
-        # TODO: Optimize execution of actions (selenium is slow!)
         #self.agent.unpause()
         for char in action:
             getattr(self.agent, char)()
         shot = self.get_screen_shot()
         #self.agent.pause()
-        #TODO: Move logic of limiting every game to max K steps
         done = self.is_done(shot)
         score = 0.0
         if done:
             distance_score = self.get_score()
-            time_score = 0 # -((self.game_steps * 0.1)/(abs(distance_score)+1e5))
+            time_score = - (self.game_steps/(abs(distance_score)+1e5)) # The higher the pace, the slowest it goes
             score = distance_score + time_score
-            self.agent.reload()
+            self.soft_reload()
         return shot.astype(np.float).ravel(), score, done
 
     def is_done(self, shot):
