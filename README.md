@@ -68,7 +68,8 @@ Once the game environment was stable enough, the approach was to implement a 1 l
 
 The output was a softmax function with 5 outputs encoding the regular Q,W,O,P and the "do nothing" action.
 
-The results were not satisfactory, it seemed to be slowly improving the cost function but the agent struggles to find a way to get the efficient running mechanics.
+The results were not satisfactory, it samples the policy correctly but improvements do not efficiently capture running mechanics.
+
 
 Hyper params used:
 
@@ -78,5 +79,15 @@ Hyper params used:
 | gamma              |  0.99 |
 |learning rate| 1e-3|
 
+
+Knee scraping policy:
+
+![score_highlight](https://raw.githubusercontent.com/juanto121/qwop-ai/master/agent/assets/pg_runner.gif)
+
+There are plenty of issues that can produce this kind of outcome mainly sparse reward and insufficient input data representation. The second one will be addressed in approach 1.
+
+### Pose estimation
+
+...
 
 
