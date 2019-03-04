@@ -1,7 +1,6 @@
 # QWOP AI - Reinforcement learning.
 
-Have you watched [Mike Boyd’s](https://www.youtube.com/user/microboyd) channel on youtube? 
-Its a fun one to waste time on. Mike, as he likes to put it, is an average guy that tries 
+Have you watched [Mike Boyd’s](https://www.youtube.com/user/microboyd) channel on youtube?. Mike, as he likes to put it, is an average guy that tries 
 to learn skills like juggling, stacking dice, and others while recording himself until he 
 masters the task at hand. On one of this challenges, he tries to learn QWOP (http://www.foddy.net/Athletics.html) 
 a game (writen by Bennett Foddy) in which there are four input buttons Q,W,O,P that control tighs and calves of an infuriating
@@ -9,7 +8,7 @@ runner on a 100 meter track. As simple as it might seem, reaching the 100 meter 
 
 Inspired by this video, the following is an attempt to code an agent using reinforcement learning that reaches consistently the 100 meter mark with under 8 hours of training.
 
-Before we dig into the approach, here’s what I found to be the most useful writeup about getting started with reinforcemente learning and an example of what is used in this project.
+Before we dig into the approach, here’s what I found to be the most useful writeup about getting started with reinforcement learning and an example of what is used in this project.
 
 http://karpathy.github.io/2016/05/31/rl/
 
@@ -68,7 +67,7 @@ Once the game environment was stable enough, the approach was to implement a 1 l
 
 The output was a softmax function with 5 outputs encoding the regular Q,W,O,P and the "do nothing" action.
 
-The results were not satisfactory, it samples the policy correctly but improvements do not efficiently capture running mechanics.
+The results were not satisfactory, it samples the policy correctly but improvements do not capture efficient running mechanics.
 
 
 Hyper params used:
@@ -84,10 +83,22 @@ Knee scraping policy:
 
 ![score_highlight](https://raw.githubusercontent.com/juanto121/qwop-ai/master/agent/assets/pg_runner.gif)
 
-There are plenty of issues that can produce this kind of outcome mainly sparse reward and insufficient input data representation. The second one will be addressed in approach 1.
+Although the output of the training was not what I expected, in comparison to other attempts to automate QWOP, the knee scraping pose is a common factor.
 
-### Pose estimation
+For reference, here are some other projects with the same goal that ended up learning similar mechanics.
+
+Genetic algorithms:
+
+[Evolving QWOP Gaits](https://ai.google/research/pubs/pub42902) 
+- Uses QWOP direct interaction instead of a model
+- Explains the knee scraping pose as a stability gene
+
+[Stanford CS229 Project: QWOP Learning](http://cs229.stanford.edu/proj2012/BrodmanVoldstad-QWOPLearning.pdf)
+- Models QWOP with their own ragdoll physics engine
+- Uses value iteration to improve base on rewards
+   
+There are plenty of issues that can produce this kind of outcome, namely sparse rewards and insufficient input representation.
+
+### Improving input: Pose estimation
 
 ...
-
-
