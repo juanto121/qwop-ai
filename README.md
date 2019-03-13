@@ -1,7 +1,7 @@
 # QWOP AI - Reinforcement learning.
 
 Have you watched [Mike Boyd’s](https://www.youtube.com/user/microboyd) channel on youtube?. Mike, as he likes to put it, is an average guy that tries 
-to learn skills like juggling, stacking dice, and others while recording himself until he 
+to learn skills like juggling, stacking dice, and others while recording himself until he /
 masters the task at hand. On one of this challenges, he tries to learn QWOP (http://www.foddy.net/Athletics.html) 
 a game (writen by Bennett Foddy) in which there are four input buttons Q,W,O,P that control tighs and calves of an infuriating
 runner on a 100 meter track. As simple as it might seem, reaching the 100 meter mark took Mike approximately 8 hours.
@@ -36,7 +36,7 @@ ways such as using the native selenium take_screenshot which turns out to be ext
 (less than a frame per second), consider that 60 FPS is approximately 0.016 ms between each frame. 
 After discarding this method, taking a screenshot using the [mss](https://pypi.org/project/mss/) library seems to be the more sensible choice.
 The only issue is that I had to hard code the position of the game in my screen hence ruining the ability to reliably reproducing the code 
-without this parameter being tweaked. With mss taking the screenshot, frames were taken every ~0.006ms (166 FPS!!).
+without this parameter being tweaked. With mss taking the screenshot, frames were taken every ~0.006s (166 FPS!!).
 
 Reinforcement learning is all about rewards, rewards are based on the game scoring system, in the QWOP case the distance score should somehow be related to distance and if possible time and running style.
 In order to get the score in this setup, pixel data on top of the screen (see picture 1) must be interpreted as text. There are multiple ways of achieving this, for instance training another neural net
@@ -97,8 +97,7 @@ Genetic algorithms:
 - Models QWOP with their own ragdoll physics engine
 - Uses value iteration to improve base on rewards
    
-There are plenty of issues that can produce this kind of outcome, namely sparse rewards and insufficient input representation.
+There are plenty of issues that can produce this kind of outcome for instance sparse rewards or insufficient input representation.
 
-### Improving input: Pose estimation
-
+## Open AI baselines - PPO and walkers
 ...
