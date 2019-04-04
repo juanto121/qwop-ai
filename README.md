@@ -14,6 +14,11 @@ http://karpathy.github.io/2016/05/31/rl/
 
 And a lecture about it here: https://www.youtube.com/watch?v=tqrcjHuNdmQ
 
+Besides that here this are some useful resources to get started with RL.
+
+- https://spinningup.openai.com/en/latest/
+ 
+
 ### Game environment setup
 
 As usual, some leg work is required in order to have a runnable environment. The first thing is figuring out a way to run the game reliably
